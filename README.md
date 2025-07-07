@@ -1,4 +1,4 @@
-# Notion-Sprint-Updator
+# Notion-Sprint-Updater
 Setting up Notion scripts through the use of their API
 
 ## Notes

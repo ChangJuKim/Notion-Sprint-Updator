@@ -1,0 +1,28 @@
+name: Run Sprint Updater
+
+on:
+  schedule:
+    - cron: "0 10 * * 1-5" # Runs every Weekday at 10:00 UTC, 05:00 EST
+
+jobs:
+  sprint-updater:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run sprint updater script
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          SPRINTS_DB_ID: ${{ secrets.SPRINTS_DB_ID }}
+          TICKETS_DB_ID: ${{ secrets.TICKETS_DB_ID }}
+        run: node index.js

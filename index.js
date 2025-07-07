@@ -37,17 +37,19 @@ async function getRecurringTasksWithoutSprint() {
   return response.results;
 }
 
-async function assignSprintToTasks(tasks, sprintId) {
+async function assignSprintToTasks(tasks, sprint) {
   for (const task of tasks) {
     await notion.pages.update({
       page_id: task.id,
       properties: {
         Sprint: {
-          relation: [{ id: sprintId }],
+          relation: [{ id: sprint.id }],
         },
       },
     });
-    console.log(`Assigned task "${task.id}" to sprint "${sprintId}"`);
+    console.log(
+      `Assigned task "${task.properties.Task.title?.[0]?.plain_text}" to sprint "${sprint.properties["Sprint name"].title?.[0]?.plain_text}"`
+    );
   }
 }
 
@@ -71,5 +73,5 @@ async function assignSprintToTasks(tasks, sprintId) {
   console.log(
     `📌 Updating ${tasks.length} task(s) to Sprint "${currentSprint.properties["Sprint name"].title?.[0]?.plain_text}"`
   );
-  await assignSprintToTasks(tasks, currentSprint.id);
+  await assignSprintToTasks(tasks, currentSprint);
 })();
